@@ -1,26 +1,25 @@
 using System;
 using System.IO;
 using System.Management.Automation;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using webhookshell.Interfaces;
 using webhookshell.Models;
 
 namespace webhookshell.Services
 {
-    public class PswhService : IPswhService
+    public class PwshService : IPwshService
     {
         private readonly IConfiguration _config;
 
-        public PswhService(IConfiguration config)
+        public PwshService(IConfiguration config)
         {
             _config = config;
         }
-        public bool RunPswh(DTOPswh pswh)
+        public bool RunPswh(DTOPswh pwsh)
         {
             
             string path = _config.GetValue<string>("ScriptLocations:Powershell");
-            var scriptPath = Path.Combine(path, pswh.script);
+            var scriptPath = Path.Combine(path, pwsh.script);
             
             if(!File.Exists(scriptPath))
             {
@@ -32,7 +31,7 @@ namespace webhookshell.Services
                 // Allowing to run .ps1 scripts in powershell
                 ps.AddScript("Set-ExecutionPolicy Unrestricted", true);
                 // Adding script with parameters if any
-                ps.AddScript(scriptPath + $" {pswh.param}", true);          
+                ps.AddScript(scriptPath + $" {pwsh.param}", true);          
 
                 var results = ps.Invoke();
                 
@@ -41,7 +40,7 @@ namespace webhookshell.Services
                 {
                     //Reading all errors
                     var error = ps.Streams.Error.ReadAll();
-                    throw new Exception($"Unable to execute powershell script {pswh.script}. Exception: {String.Join(",", error)}");
+                    throw new Exception($"Unable to execute powershell script {pwsh.script}. Exception: {String.Join(",", error)}");
                 }
                 
                 // Clearing pipeline

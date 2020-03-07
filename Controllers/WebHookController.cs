@@ -10,25 +10,25 @@ namespace webhookshell.Controllers
     public class WebHookController: ControllerBase
     {
         private readonly IConfiguration _config;
-        private readonly IPswhService _pswhService;
+        private readonly IPwshService _pwshService;
 
-        public WebHookController(IConfiguration config, IPswhService pswhService)
+        public WebHookController(IConfiguration config, IPwshService pswhService)
         {
             _config = config;
-            _pswhService = pswhService;
+            _pwshService = pswhService;
         }
 
         [HttpGet]
-        public IActionResult StartPsScript([FromQuery]DTOPswh pswh)
+        public IActionResult StartPsScript([FromQuery]DTOPswh pwsh)
         {
             string key = _config.GetValue<string>("key");
-            if(!string.Equals(key, pswh.key))
+            if(!string.Equals(key, pwsh.key))
             {
                 return Unauthorized("Invalid key. Please provide a valid key to make a webhook.");
             }
 
-            _pswhService.RunPswh(pswh);
-            return Ok($"Script '{pswh.script}' has been succesfully executed.");
+            _pwshService.RunPswh(pwsh);
+            return Ok($"Script '{pwsh.script}' has been succesfully executed.");
         }
     }
 }

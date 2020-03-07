@@ -28,7 +28,7 @@ namespace webhookshell
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IPswhService, PswhService>();
+            services.AddSingleton<IPwshService, PwshService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +39,8 @@ namespace webhookshell
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseExceptionHandler("/error");
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

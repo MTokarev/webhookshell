@@ -3,7 +3,7 @@ using webhookshell.Models;
 
 namespace webhookshell.Interfaces
 {
-    public interface IPswhService
+    public interface IPwshService
     {
         public bool RunPswh(DTOPswh pswh);
     }
