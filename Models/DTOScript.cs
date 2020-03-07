@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace webhookshell.Models
 {
-    public class DTOPswh
+    public class DTOScript
     {
         [Required]
         public string script { get; set; }
