@@ -5,5 +5,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.0.0"/>
     <PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.0.0"/>
+    <Content Include="./powershellScripts/**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

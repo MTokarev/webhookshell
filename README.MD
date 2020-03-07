@@ -5,7 +5,10 @@
     - [Content](#content)
   - [Product Overview](#product-overview)
   - [How it works](#how-it-works)
-  - [Specify root folder for scripts](#specify-root-folder-for-scripts)
+  - [Setting up](#setting-up)
+    - [Script locations](#script-locations)
+    - [Adding key](#adding-key)
+  - [Install on windows](#install-on-windows)
 
 
 ## Product Overview
@@ -30,17 +33,19 @@ If any exception arise along the way, exception hander will return an error:
 
 **Example** of succesfful webhook without param:
 
-`https://localhost:5001/webhook/v1/?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1`
+`https://localhost:5001/webhook/v1?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1`
 
 ![img](~/../Docs/Img/scriptexecutedsuccesfully.png)
 
 With parameters:
 
-`https://localhost:5001/webhook/v1/?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1&param=-Param1 A -Param2 B`
+`https://localhost:5001/webhook/v1?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1&param=-Param1 A -Param2 B`
 
 ![img](~/../Docs/Img/scriptexecutedsuccesfully2.png)
 
-## Specify root folder for scripts
+## Setting up
+
+### Script locations
 
 In the appsettings file there is a section **ScriptLocations** that contain path to scripts, default value:
 
@@ -49,3 +54,13 @@ In the appsettings file there is a section **ScriptLocations** that contain path
     "PowerShell": ".\\powershellScripts"
   }
 ```
+### Adding key
+
+Key is nothing, but string. You can whatever you want. Key is stored in appsettings file:
+
+```
+"key": "24ffc5be-7dd8-479f-898e-27169bf23e7f"
+```
+
+## Install on windows
+
