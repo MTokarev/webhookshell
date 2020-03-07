@@ -9,6 +9,8 @@
     - [Script locations](#script-locations)
     - [Adding key](#adding-key)
   - [Install on windows](#install-on-windows)
+  - [Make sure it works](#make-sure-it-works)
+  - [Security Context](#security-context)
 
 
 ## Product Overview
@@ -64,3 +66,28 @@ Key is nothing, but string. You can whatever you want. Key is stored in appsetti
 
 ## Install on windows
 
+
+## Make sure it works
+
+By default I included one ps1 script Test-Script.ps1 that you can run.
+Script has 3 option parameters:
+
+```
+-Param1 [string]
+-Param2 [string]
+-CreateFileIn [string]
+```
+If you provide directory `CreateFileIn` then script will create an empty file `apidemo.tmp`. It will confirm that the app is configured properly. 
+
+**Example**
+
+Open your browser and go to (change localhost:5000 to your hostname)
+`https://localhost:5001/webhook/v1/?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1&param=-Param1%20A%20-Param2%20B%20-CreateFileIn%20.\powershellScripts`
+
+![img](~/../Docs/Img/scriptexecutedsuccesfully3.png)
+
+If you can see file in the folder you provided with CreateFileIn parameter, then you can sleep in peace.
+
+## Security Context
+
+By default app on windows is using appPool user (LocalSystem) context and has a local admin access. You can provide any credentials inside your ps1 script by using your own logic, or you can change appSetting username in the IIS to change the context.

@@ -29,9 +29,9 @@ namespace webhookshell.Services
             using (PowerShell ps = PowerShell.Create())
             {
                 // Allowing to run .ps1 scripts in powershell
-                ps.AddScript("Set-ExecutionPolicy Unrestricted", true);
+                ps.AddScript("Set-ExecutionPolicy Unrestricted");
                 // Adding script with parameters if any
-                ps.AddScript(scriptPath + $" {pwsh.param}", true);          
+                ps.AddScript(scriptPath + $" {pwsh.param}");          
 
                 var results = ps.Invoke();
                 

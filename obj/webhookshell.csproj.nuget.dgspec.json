@@ -86,7 +86,7 @@
         }
       },
       "runtimes": {
-        "win-x64": {
+        "win10-x64": {
           "#import": []
         }
       }
