@@ -57,8 +57,14 @@ namespace webhookshell.Services
                 case "ps1":
                     string path = _config.GetValue<string>("ScriptLocations:Powershell");
                     var scriptPath = Path.Combine(path, scriptToRun.script);
-                    processToRun.processName = "powershell.exe";
+                    processToRun.processName = "powershell";
                     processToRun.scriptWithArgs = $"{scriptPath} {scriptToRun.param}";
+                    break;
+                case "py":
+                    string pathPY = _config.GetValue<string>("ScriptLocations:Python");
+                    var scriptPathPY = Path.Combine(pathPY, scriptToRun.script);
+                    processToRun.processName = "python";
+                    processToRun.scriptWithArgs = $"{scriptPathPY} {scriptToRun.param}";
                     break;
                 default:
                     throw new InvalidDataException($"Unsupported file type: {scriptToRun.script}");
