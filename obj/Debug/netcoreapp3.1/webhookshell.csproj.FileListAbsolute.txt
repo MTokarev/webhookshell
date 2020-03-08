@@ -17,3 +17,4 @@ c:\git\webhookshell\obj\Debug\netcoreapp3.1\staticwebassets\webhookshell.StaticW
 c:\git\webhookshell\obj\Debug\netcoreapp3.1\webhookshell.dll
 c:\git\webhookshell\obj\Debug\netcoreapp3.1\webhookshell.pdb
 c:\git\webhookshell\bin\Debug\netcoreapp3.1\powershellScripts\Test-Script.ps1
+c:\git\webhookshell\bin\Debug\netcoreapp3.1\pythonscripts\test-script.py
