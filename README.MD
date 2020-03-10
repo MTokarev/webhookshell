@@ -13,6 +13,7 @@
   - [Install on windows](#install-on-windows)
   - [Make sure it works](#make-sure-it-works)
   - [Security Context](#security-context)
+  - [How to add another providers](#how-to-add-another-providers)
 
 
 ## Product Overview
@@ -29,17 +30,17 @@ User send the HTTP GET message to the server. The message includes following par
 
 base URI:
 
-`http://servename/webhook/v1?key=yourKey&script=YourScript&param=-Your -Params`
+`https://servename/webhook/v1?key=yourKey&script=YourScript&param=-Your -Params`
 
-In order to protect web hook from accidental execution server will load the **Key** from appsettings.json and compare with the key provided in request. If not match, server stop executing pipeline and return an error:
+In order to protect a web hook from accidental execution, server will load the **Key** from appsettings.json and compare with the key provided in request. If doesn't match, server stop executing pipeline and return an error:
 
 ![img](~/../Docs/Img/keyerror.png)
 
-If any exception arise along the way, exception hander will return an error:
+If any exceptions arise along the way, global exception handler will return an error:
 
 ![img](~/../Docs/Img/scriptexecutionfailed.png)
 
-**Example** of succesfful webhook without param:
+**Example** of succesfful webhook without params:
 
 `https://localhost:5001/webhook/v1?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1`
 
@@ -53,19 +54,20 @@ With parameters:
 
 ## Supported Shells
 
-Currently this project supports PowerShell and Python, but can easily extend to use whatever you want. In order to do so, just change a class **ScriptRunner.cs** and add your shell into the **ProcessBuilder()** method.
+Currently this project supports PowerShell and Python, but can be easily extended to use whatever you want to trigger. In order to do so, just change a class **ScriptRunner.cs** and add your shell into the **ProcessBuilder()** method.
 
 ## Setting up
 
 ### Supported OSs
 
 This project was tested on Windows, but supports Linux as well.
+For powershell you need to have powershell installed and configured inside PATH variable (default for windows) and for python you have to have it in PATH as well.
 
 ### Script locations
 
 In the appsettings file there is a section **ScriptLocations** that contain path to scripts, default value:
 
-```
+```json
 "ScriptLocations": {
   "PowerShell": ".\\powershellscripts",
   "Python": ".\\pythonscripts"
@@ -116,3 +118,35 @@ If you provide directory `-Param1 A -Param2 B` then script shoult return them (a
 ## Security Context
 
 By default web app on windows uses applicationPool context (LocalSystem) which means that it has a local admin access. You can provide any credentials inside your ps1 script by using your own logic, or you can change appSetting username in the IIS to change the context.
+
+## How to add another providers
+
+For this task you have to download the project and extend ScriptRunner.cs service with your provider. Here is how it looks like:
+
+```cs
+private ProcessToRun ProcessBuilder(DTOScript scriptToRun)
+        {
+            
+            ProcessToRun processToRun = new ProcessToRun();
+            switch (scriptToRun.script.Split(".", StringSplitOptions.RemoveEmptyEntries).Last())
+            {
+                case "ps1":
+                    string path = _config.GetValue<string>("ScriptLocations:Powershell");
+                    var scriptPath = Path.Combine(path, scriptToRun.script);
+                    processToRun.processName = "powershell";
+                    processToRun.scriptWithArgs = $"{scriptPath} {scriptToRun.param}";
+                    break;
+                case "py":
+                    string pathPY = _config.GetValue<string>("ScriptLocations:Python");
+                    var scriptPathPY = Path.Combine(pathPY, scriptToRun.script);
+                    processToRun.processName = "python";
+                    processToRun.scriptWithArgs = $"{scriptPathPY} {scriptToRun.param}";
+                    break;
+                default:
+                    throw new InvalidDataException($"Unsupported file type: {scriptToRun.script}");
+
+            }
+            return processToRun;
+        }
+```
+As you can see the only thing you need to do, beside adding your script folder into the appsettings.json, just add your file extension and the proccess name you need to call out.
