@@ -40,8 +40,8 @@ namespace webhookshell.Services
                     string stdout = reader.ReadToEnd();
                     if(!String.IsNullOrEmpty(stderr))
                     {
-                        throw new ApplicationException($@"Exeption occured in script execution.
-                                        \n'{processToRun.scriptWithArgs} failed. Deatils: {stdout}'");
+                        throw new ApplicationException($@"Exception occurred in script execution.
+                                        \n'{processToRun.scriptWithArgs} failed. Output (stdOut): {stdout}' Error (stdErr): {stderr}");
                     }
                     return stdout;
                 }
