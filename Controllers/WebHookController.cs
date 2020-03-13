@@ -25,7 +25,7 @@ namespace webhookshell.Controllers
             if(!string.Equals(key, scriptFromQuery.key))
             {
                 return Unauthorized(new DTOResult{
-                    isCompletedSuccesfully= false,
+                    isCompletedSuccessfully= false,
                     message = "Invalid key. Please provide a valid key to make a webhook."
                 });
             }
@@ -33,7 +33,7 @@ namespace webhookshell.Controllers
             string stdout = _scriptRunner.Run(scriptFromQuery);
             
             return Ok(new DTOResult{
-                isCompletedSuccesfully = true,
+                isCompletedSuccessfully = true,
                 scriptName = scriptFromQuery.script,
                 param = scriptFromQuery.param,
                 output = stdout

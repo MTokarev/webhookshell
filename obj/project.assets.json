@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {},
-    ".NETCoreApp,Version=v3.1/win-x64": {}
+    ".NETCoreApp,Version=v3.1/win81-x64": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
@@ -86,7 +86,7 @@
       }
     },
     "runtimes": {
-      "win-x64": {
+      "win81-x64": {
         "#import": []
       }
     }
