@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "WnSPWt6Ug3ktw8ezPxkolMOO0s0NwxdFMeZQjheS0D8=",
+  "Source": "webhookshell",
+  "BasePath": "_content/webhookshell",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
