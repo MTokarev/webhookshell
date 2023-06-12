@@ -7,7 +7,7 @@ on:
 
 jobs:
   framework-specific:
-    uses: dotnet.yml@master
+    uses: .github/workflows/dotnet.yml@master
     with:
       runtime-name: framework-dependent
       version-tag: ${{ github.run_number }}
