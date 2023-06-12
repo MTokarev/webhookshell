@@ -26,6 +26,7 @@ jobs:
         path: /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/
 
   release:
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Download Artifact
