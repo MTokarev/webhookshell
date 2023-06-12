@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using webhookshell.Interfaces;
 using webhookshell.Models;
 
@@ -9,35 +8,24 @@ namespace webhookshell.Controllers
     [Route("[controller]/v1/")]
     public class WebHookController: ControllerBase
     {
-        private readonly IConfiguration _config;
         private readonly IScriptRunner _scriptRunner;
 
-        public WebHookController(IConfiguration config, IScriptRunner scriptRunner)
+        public WebHookController(IScriptRunner scriptRunner)
         {
-            _config = config;
             _scriptRunner = scriptRunner;
         }
 
         [HttpGet]
         public IActionResult StartPsScript([FromQuery]DTOScript scriptFromQuery)
         {
-            string key = _config.GetValue<string>("key");
-            if(!string.Equals(key, scriptFromQuery.key))
+            Result<DTOResult> scriptRun = _scriptRunner.Run(scriptFromQuery);
+
+            if (scriptRun.IsValid)
             {
-                return Unauthorized(new DTOResult{
-                    isCompletedSuccessfully= false,
-                    message = "Invalid key. Please provide a valid key to make a webhook."
-                });
+                return Ok(scriptRun.Data);
             }
 
-            string stdout = _scriptRunner.Run(scriptFromQuery);
-            
-            return Ok(new DTOResult{
-                isCompletedSuccessfully = true,
-                scriptName = scriptFromQuery.script,
-                param = scriptFromQuery.param,
-                output = stdout
-            });
+            return BadRequest(scriptRun.Errors);
         }
     }
 }
