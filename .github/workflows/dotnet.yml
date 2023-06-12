@@ -32,7 +32,7 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@v3
       with:
-        name: Artifact
+        name: artifact
     - name: Create a release
       id: new-release
       uses: actions/create-release@v1
