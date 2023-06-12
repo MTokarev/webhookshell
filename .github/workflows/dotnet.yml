@@ -4,6 +4,10 @@ on:
   push:
     branches: [ "master" ]
 
+env:
+  ARTIFACT_NAME: artifact
+  ARTIFACT_FILE_NAME: artifact.zip
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,12 +24,12 @@ jobs:
         dotnet build --no-restore
         dotnet publish -c Release
     - name: Zip Artifact
-      run: tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/ -cvf artifact.zip .
+      run: tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/ -cvf $ARTIFACT_FILE_NAME .
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: artifact
-        path: artifact.zip
+        name: ${{ env.ARTIFACT_NAME }}
+        path: ${{ env.ARTIFACT_FILE_NAME }}
 
   release:
     needs: build
@@ -34,7 +38,7 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@v3
       with:
-        name: artifact
+        name: ${{ env.ARTIFACT_NAME }}
     - name: Create a release
       id: new-release
       uses: actions/create-release@v1
@@ -49,6 +53,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.new-release.outputs.upload_url }}
-        asset_path: artifact.zip
-        asset_name: WebhookShell-${{ github.run_number }}.zip
+        asset_path: ${{ env.ARTIFACT_FILE_NAME }}
+        asset_name: webhookshell-${{ github.run_number }}.zip
         asset_content_type: application/zip
