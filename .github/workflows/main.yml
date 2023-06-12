@@ -4,13 +4,17 @@ on:
   push:
     branches: [ "master" ]
 
-
+# TODO: Currently all jobs will create a different releases with the same name
+# For Example:
+# 1. Release 5 (for linux x64)
+# 2. Release 5 (for windows x64)
+# This needs to fixed. Only one release should be created at the pipeline run, and that release should include all artifacts (windows, linux, etc)
 jobs:
   framework-specific:
     name: Build and Release Framework-Dependent Package
     uses: ./.github/workflows/dotnet.yml
     with:
-      version-tag: ${{ github.run_id }}
+      version-tag: ${{ github.run_number }}
 
   linux-x64:
     name: Build and Release for linux x64
@@ -18,7 +22,7 @@ jobs:
     with:
       runtime-name: linux-x64
       runtime-configuration: --runtime linux-x64
-      version-tag: ${{ github.run_id }}
+      version-tag: ${{ github.run_number }}
 
   rhel-x64:
     name: Build and Release for RHEL x64
@@ -26,7 +30,7 @@ jobs:
     with:
       runtime-name: rhel-x64
       runtime-configuration: --runtime rhel-x64
-      version-tag: ${{ github.run_id }}
+      version-tag: ${{ github.run_number }}
 
   windows-x64:
     name: Build and Release for Windows x64
