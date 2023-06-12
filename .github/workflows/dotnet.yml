@@ -20,7 +20,7 @@ jobs:
         dotnet build --no-restore
         dotnet publish -c Release
     - name: Zip Artifact
-      run: tar -cvf artifact.zip /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/
+      run: tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/ -cvf artifact.zip .
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
       with:
