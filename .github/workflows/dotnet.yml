@@ -1,6 +1,3 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
 name: .NET
 
 on:
@@ -9,9 +6,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -30,3 +25,17 @@ jobs:
         name: Artifact
         path: /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/
 
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Artifact
+    - name: Create a release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.run_number }}
+        release_name: Release ${{ github.run_number}}
