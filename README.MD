@@ -1,4 +1,4 @@
-![Pipeline]https://github.com/mtokarev/webhookshell/actions/workflows/dotnet.yml/badge.svg
+![Pipeline](https://github.com/mtokarev/webhookshell/actions/workflows/dotnet.yml/badge.svg)
 
 # WebHookShell
 
