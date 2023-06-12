@@ -11,4 +11,28 @@ jobs:
     uses: ./.github/workflows/dotnet.yml
     with:
       runtime-name: framework-dependent
-      version-tag: ${{ github.run_number }}
+      version-tag: ${{ github.run_id }}
+
+  linux-x64:
+    name: Build and Release for linux x64
+    uses: ./.github/workflows/dotnet.yml
+    with:
+      runtime-name: linux-x64
+      runtime-configuration: --runtime linux-x64
+      version-tag: ${{ github.run_id }}
+
+  rhel-x64:
+    name: Build and Release for RHEL x64
+    uses: ./.github/workflows/dotnet.yml
+    with:
+      runtime-name: rhel-x64
+      runtime-configuration: --runtime rhel-x64
+      version-tag: ${{ github.run_id }}
+
+  windows-x64:
+    name: Build and Release for Windows x64
+    uses: ./.github/workflows/dotnet.yml
+    with:
+      runtime-name: win-x64
+      runtime-configuration: --runtime win-x64
+      version-tag: ${{ github.run_id }}
