@@ -1,15 +1,26 @@
-name: .NET
+name: .NET Build and Publish
 
 on:
-  push:
-    branches: [ "master" ]
+  workflow_call:
+    inputs:
+      runtime-name:
+        required: true
+        type: string
+      runtime-configuration:
+        required: false
+        default: ""
+        type: string
+      version-tag:
+        required: false
+        default: ${{ github.run_number}}
+        type: string
 
 env:
-  ARTIFACT_NAME: artifact
-  ARTIFACT_FILE_NAME: artifact.zip
+  ARTIFACT_NAME: artifact-${{ inputs.runtime-name }}
+  ARTIFACT_FILE_NAME: artifact-${{ inputs.runtime-name }}.zip
 
 jobs:
-  build:
+  build-framework-dependent:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -22,7 +33,7 @@ jobs:
     - name: Build
       run: |
         dotnet build --no-restore
-        dotnet publish -c Release
+        dotnet publish -c Release ${{ inputs.runtime-configuration}}
     - name: Zip Artifact
       run: tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/ -cvf $ARTIFACT_FILE_NAME .
     - name: Upload Build Artifact
@@ -32,7 +43,7 @@ jobs:
         path: ${{ env.ARTIFACT_FILE_NAME }}
 
   release:
-    needs: build
+    needs: build-framework-dependent
     runs-on: ubuntu-latest
     steps:
     - name: Download Artifact
@@ -45,7 +56,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.run_number }}
+        tag_name: ${{ inputs.version-tag }}
         release_name: Release ${{ github.run_number}}
     - name: Upload Artifact
       uses: actions/upload-release-asset@v1
@@ -54,5 +65,5 @@ jobs:
       with:
         upload_url: ${{ steps.new-release.outputs.upload_url }}
         asset_path: ${{ env.ARTIFACT_FILE_NAME }}
-        asset_name: webhookshell-${{ github.run_number }}.zip
+        asset_name: webhookshell-${{ inputs.runtime-name }}-${{ inputs.version-tag }}.zip
         asset_content_type: application/zip

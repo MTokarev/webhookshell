@@ -1,0 +1,13 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+
+
+jobs:
+  framework-specific:
+    uses: dotnet.yml@master
+    with:
+      runtime-name: framework-dependent
+      version-tag: ${{ github.run_number }}
