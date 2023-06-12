@@ -4,7 +4,8 @@ on:
   workflow_call:
     inputs:
       runtime-name:
-        required: true
+        required: false
+        default: framework-dependent
         type: string
       runtime-configuration:
         required: false
@@ -35,7 +36,14 @@ jobs:
         dotnet build --no-restore
         dotnet publish -c Release ${{ inputs.runtime-configuration}}
     - name: Zip Artifact
-      run: tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/ -cvf $ARTIFACT_FILE_NAME .
+      run: |
+        if [ "${{ inputs.runtime-name }}" = "framework-dependent" ]; then
+            folder="publish"
+        else
+            folder="${{ inputs.runtime-name }}"
+        fi
+        $PUBLISH_FOLDER = 
+        tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/$folder/ -cvf $ARTIFACT_FILE_NAME .
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
       with:

@@ -10,7 +10,6 @@ jobs:
     name: Build and Release Framework-Dependent Package
     uses: ./.github/workflows/dotnet.yml
     with:
-      runtime-name: framework-dependent
       version-tag: ${{ github.run_id }}
 
   linux-x64:
