@@ -4,6 +4,6 @@ namespace webhookshell.Interfaces
 {
     public interface IScriptRunner
     {
-         public string Run(DTOScript scriptToRun);
+         public Result<DTOResult> Run(DTOScript scriptToRun);
     }
 }
