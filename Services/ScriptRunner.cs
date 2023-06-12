@@ -34,8 +34,8 @@ namespace webhookshell.Services
             ProcessToRun processToRun = ProcessBuilder(scriptToRun, handler: validationResult.Data);
 
             scriptRunResult.Data = new DTOResult{
-                ScriptName = scriptToRun.script,
-                Param = scriptToRun.param,
+                ScriptName = scriptToRun.Script,
+                Param = scriptToRun.Param,
                 Output = ExecuteScript(processToRun)
             };
 
@@ -47,13 +47,13 @@ namespace webhookshell.Services
             Result<ScriptHandler> result = new();
 
             string scriptExtension = scriptToRun
-                .script
+                .Script
                 .Split(".", StringSplitOptions.RemoveEmptyEntries)
                 .Last();
             
             if (scriptExtension is null)
             {
-                result.Errors.Add($"Unable to extract script extension from '{scriptToRun.script}'.");
+                result.Errors.Add($"Unable to extract script extension from '{scriptToRun.Script}'.");
                 return result;
             }
             
@@ -73,12 +73,12 @@ namespace webhookshell.Services
                 result.Data = handler;
             }
 
-            if (!handler.KeysMapping.TryGetValue(scriptToRun.script, out string key))
+            if (!handler.KeysMapping.TryGetValue(scriptToRun.Script, out string key))
             {
                 key = handler.Key ?? _options.DefaultKey;
             }
 
-            if (!string.Equals(key, scriptToRun.key))
+            if (!string.Equals(key, scriptToRun.Key))
             {
                 result.Errors.Add($"Invalid security key, please double check it and run command again.");
             }
@@ -114,9 +114,9 @@ namespace webhookshell.Services
         {
             
             ProcessToRun processToRun = new();
-            var scriptPath = Path.Combine(handler.ScriptsLocation, scriptToRun.script);
+            var scriptPath = Path.Combine(handler.ScriptsLocation, scriptToRun.Script);
             processToRun.processName = handler.ProcessName;
-            processToRun.scriptWithArgs = $"{scriptPath} {scriptToRun.param}";
+            processToRun.scriptWithArgs = $"{scriptPath} {scriptToRun.Param}";
             
             return processToRun;
         }

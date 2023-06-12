@@ -5,9 +5,9 @@ namespace webhookshell.Models
     public class DTOScript
     {
         [Required]
-        public string script { get; set; }
-        public string param { get; set; }
+        public string Script { get; set; }
+        public string Param { get; set; }
         [Required]
-        public string key { get; set; }
+        public string Key { get; set; }
     }
 }
