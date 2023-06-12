@@ -25,7 +25,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: artifact
-        path: /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/artifact.zip
+        path: artifact.zip
 
   release:
     needs: build
@@ -49,6 +49,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.new-release.outputs.upload_url }}
-        asset_path: /home/runner/work/webhookshell/artifact.zip
+        asset_path: artifact.zip
         asset_name: WebhookShell-${{ github.run_number }}.zip
         asset_content_type: application/zip
