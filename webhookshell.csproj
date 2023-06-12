@@ -3,10 +3,10 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="./powershellscripts/**">
+    <Content Include="./scripts/powershell/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="./pythonscripts/**">
+    <Content Include="./scripts/python/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
