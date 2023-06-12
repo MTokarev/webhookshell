@@ -7,6 +7,7 @@ on:
 
 jobs:
   framework-specific:
+    name: Build and Release Framework-Dependent Package
     uses: ./.github/workflows/dotnet.yml
     with:
       runtime-name: framework-dependent
