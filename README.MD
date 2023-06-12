@@ -7,9 +7,9 @@
   - [How it works](#how-it-works)
   - [Setting up](#setting-up)
     - [Supported OSs](#supported-oss)
-    - [Script locations](#script-locations)
-    - [Adding key](#adding-key)
-  - [Install on windows](#install-on-windows)
+    - [Key configuration](#key-configuration)
+  - [Install](#install)
+    - [Windows](#windows)
   - [Make sure it works](#make-sure-it-works)
   - [Security Context](#security-context)
   - [How to add another providers](#how-to-add-another-providers)
@@ -58,17 +58,7 @@ With parameters:
 This project was tested on Windows, but supports Linux as well.
 For powershell you need to have powershell installed and configured inside PATH variable (default for windows) and for python you have to have it in PATH as well.
 
-### Script locations
-
-In the appsettings file there is a section **ScriptLocations** that contain path to scripts, default value:
-
-```json
-"ScriptLocations": {
-  "PowerShell": "./powershellscripts",
-  "Python": "./pythonscripts"
-  }
-```
-### Adding key
+### Key configuration
 
 There are few places where you can define the key:
 
@@ -99,7 +89,18 @@ Example:
   }
 ```
 
-## Install on windows
+Here `test-script.py` has the unique key `77aae8aa-50d2-49d9-be8c-e9f59aaf39e9`.
+
+## Install
+
+This is the cross platform app and can run on Mac, Windows or Linux.
+If you want to run it on Linux you need to compile the app first.
+
+I need to do a better job setting up a release pipeline that will publish the artifact to the github for different version.
+
+However, I am going to keep instruction for Windows.
+
+### Windows
 
 Open PowerShell as an administrator and copy this super formatted line:
 
