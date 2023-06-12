@@ -22,7 +22,7 @@ jobs:
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: Artifact
+        name: artifact
         path: /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/publish/
 
   release:
