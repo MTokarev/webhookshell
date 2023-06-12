@@ -47,6 +47,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.new-release.outputs.upload_url }}
-        asset_path: ./artifact.zip
+        asset_path: ./artifact
         asset_name: WebhookShell-${{ github.run_number }}.zip
         asset_content_type: application/zip
