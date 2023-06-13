@@ -43,9 +43,9 @@ jobs:
         if [ "${{ inputs.runtime-name }}" = "framework-dependent" ]; then
             folder="publish"
         else
-            folder="${{ inputs.runtime-name }}"
+            folder="${{ inputs.runtime-name }}/publish"
         fi
-        tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/$folder/publish -cvf $ARTIFACT_FILE_NAME .
+        tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/$folder -cvf $ARTIFACT_FILE_NAME .
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
       with:
