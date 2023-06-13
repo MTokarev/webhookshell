@@ -14,28 +14,32 @@ jobs:
     name: Build and Release Framework-Dependent Package
     uses: ./.github/workflows/dotnet.yml
     with:
-      version-tag: ${{ github.run_number }} Framework-Dependent
+      release-name: Release ${{ github.run_number }} (Required .net6.0 runtime)
+      version-tag: ${{ github.run_number }}
 
   linux-x64:
     name: Build and Release for linux x64
     uses: ./.github/workflows/dotnet.yml
     with:
+      release-name: Release ${{ github.run_number }} for Linux
       runtime-name: linux-x64
       runtime-configuration: --runtime linux-x64
-      version-tag: ${{ github.run_number }} For linux
+      version-tag: ${{ github.run_number }}
 
   rhel-x64:
     name: Build and Release for RHEL x64
     uses: ./.github/workflows/dotnet.yml
     with:
+      release-name: Release ${{ github.run_number }} for RedHat
       runtime-name: rhel-x64
       runtime-configuration: --runtime rhel-x64
-      version-tag: ${{ github.run_number }} for RedHat
+      version-tag: ${{ github.run_number }}
 
   windows-x64:
     name: Build and Release for Windows x64
     uses: ./.github/workflows/dotnet.yml
     with:
+      release-name: Release ${{ github.run_number }} for Windows
       runtime-name: win-x64
       runtime-configuration: --runtime win-x64
-      version-tag: ${{ github.run_id }} for Windows
+      version-tag: ${{ github.run_number }}

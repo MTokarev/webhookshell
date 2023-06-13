@@ -3,6 +3,9 @@ name: .NET Build and Publish
 on:
   workflow_call:
     inputs:
+      release-name:
+        required: true
+        type: string
       runtime-name:
         required: false
         default: framework-dependent
@@ -64,7 +67,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ inputs.runtime-name }}-${{ inputs.version-tag }}
-        release_name: Release ${{ github.run_number}}
+        release_name: ${{ inputs.release-name }}
     - name: Upload Release
       uses: actions/upload-release-asset@v1
       env:
