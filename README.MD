@@ -1,5 +1,3 @@
-Here is the revised version with corrected grammar:
-
 # WebHookShell
 
 ![Pipeline](https://github.com/mtokarev/webhookshell/actions/workflows/dotnet.yml/badge.svg)
