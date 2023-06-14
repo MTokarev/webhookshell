@@ -1,167 +1,145 @@
+Here is the revised version with corrected grammar:
 
 # WebHookShell
 
 ![Pipeline](https://github.com/mtokarev/webhookshell/actions/workflows/dotnet.yml/badge.svg)
+
 ### Content
 - [WebHookShell](#webhookshell)
     - [Content](#content)
   - [Product Overview](#product-overview)
   - [How it works](#how-it-works)
   - [Setting up](#setting-up)
-    - [Supported OSs](#supported-oss)
     - [Key configuration](#key-configuration)
   - [Installation](#installation)
-    - [Windows](#windows)
+    - [1. Framework dependent](#1-framework-dependent)
+    - [2. Platform specific](#2-platform-specific)
+    - [Proxy](#proxy)
   - [Make sure it works](#make-sure-it-works)
   - [Security Context](#security-context)
   - [How to add another providers](#how-to-add-another-providers)
 
-
 ## Product Overview
-In the modern world you have different approaches to run scripts using WebHooks, for instance Azure Functions, Azure Automation or Amazon Lambda.
-In onprem world users might use tools like Jenkins just to provide ability to trigger the function execution (overkill for webhooks).
-This small lightweight project was born to make an open source alternative that you can easily deploy on both Linux or Windows boxes.
+In the modern world, there are different approaches to run scripts using WebHooks, such as Azure Functions, Azure Automation, or Amazon Lambda. In the on-prem world, users might use tools like Jenkins just to provide the ability to trigger function execution, which can be overkill for webhooks. This small lightweight project was born as an open-source alternative that you can easily deploy on both Linux or Windows boxes.
 
 ## How it works
-User sends the HTTP GET message to the server. The call includes following parameters:
+Users send an HTTP GET message to the server. The call includes the following parameters:
 
 1. Security Key
 2. Script name
 3. *[Optional]* Param
 
-Base project URI:
+The base project URI is:
 
-`https://localhost:5001/webhook/v1?key=yourKey&script=YourScript&param=-Your -Params`
+`https://localhost:5001/webhook/v1?key=yourKey&script=YourScript&param=-Your-Params`
 
-In order to protect scripts from accidental or unauthorized executions the server will load the **Key** from `appsettings.json` and compare with the one from the user request. If it doesn't match, then server stop executing pipeline and return an error:
+To protect scripts from accidental or unauthorized executions, the server will load the **Key** from `appsettings.json` and compare it with the one from the user request. If they don't match, the server will stop executing the pipeline and return an error:
 
 ![img](~/../Docs/Img/keyerror.png)
 
-If any exceptions arise along the way, global exception handler will return an error:
+If any exceptions arise along the way, the global exception handler will return an error:
 
 ![img](~/../Docs/Img/scriptexecutionfailed.png)
 
-**Example** of successful webhook without params:
+Here is an example of a successful webhook without params:
 
 `https://localhost:5001/webhook/v1?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1`
 
 ![img](~/../Docs/Img/scriptexecutedsuccesfully.png)
 
-With parameters:
+And with parameters:
 
-`https://localhost:5001/webhook/v1?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1&param=-Param1 A -Param2 B`
+`https://localhost:5001/webhook/v1?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1&param=-Param1-A-Param2-B`
 
 ![img](~/../Docs/Img/scriptexecutedsuccesfully2.png)
 
 ## Setting up
 
-### Supported OSs
-
-This project was tested on Windows, but supports other operating systems as well.
 You can find two default script handlers in the configuration:
 
 1. Python3
 2. Pwsh (Powershell)
 
-
-If you keep them as is then you need to install **pwsh** and **python** and add inside `PATH` variable (default for windows) on the server where this API will be running.
+If you keep them as they are, you need to install **pwsh** and **python** and add them to the `PATH` variable (default for Windows) on the server where this API will be running.
 
 ### Key configuration
+There are a few places where you can define the security key:
 
-There are few places where you can define security key:
+1. You can provide a key for each script. In this case, you don't need to share a common one.
+2. Per script handler. All scripts registered under the handler will share the same key if they don't have a unique key (check option 1).
+3. Global key (or Default). This key will be used
 
-1. You can provide a key per each script. In this case you don't need to share a common one.
-2. Per script handler. All scripts that are registered under the handler will share the same key if they don't have a unique key (check option 1)
-3. Global key (or Default). This key will be used if the script or handler don't have keys specified. 
+ if the script or handler don't have keys specified.
 
-Example:
+For example:
+
 ```json
 "Scripts": {
-    "DefaultKey": "24ffc5be-7dd8-479f-898e-27169bf23e7f",
-    "Handlers": [
-      {
-        "ProcessName": "pwsh",
-        "ScriptsLocation": "./powershellscripts",
-        "FileExtension": "ps1",
-        "Key": "aaa"
-      },
-      {
-        "ProcessName": "python3",
-        "ScriptsLocation": "./pythonscripts",
-        "FileExtension": "py",
-        "KeysMapping": {
-          "test-script.py": "77aae8aa-50d2-49d9-be8c-e9f59aaf39e9"
-        }
+  "DefaultKey": "24ffc5be-7dd8-479f-898e-27169bf23e7f",
+  "Handlers": [
+    {
+      "ProcessName": "pwsh",
+      "ScriptsLocation": "./powershellscripts",
+      "FileExtension": "ps1",
+      "Key": "88aae8aa-50d2-49d9-be8c-e9f59aaf3988"
+    },
+    {
+      "ProcessName": "python3",
+      "ScriptsLocation": "./pythonscripts",
+      "FileExtension": "py",
+      "KeysMapping": {
+        "test-script.py": "77aae8aa-50d2-49d9-be8c-e9f59aaf39e9"
       }
-    ]
-  }
+    }
+  ]
+}
 ```
 
-Here `test-script.py` has the unique key `77aae8aa-50d2-49d9-be8c-e9f59aaf39e9`. Also, **pwsh** handler has a key that will be valid for all scripts that don't have the unique key set.
+In this example, the script `test-script.py` has a unique key `77aae8aa-50d2-49d9-be8c-e9f59aaf39e9`. The **pwsh** handler has a key that will be valid for all scripts that don't have a unique key set.
 
 ## Installation
 
-This is the cross platform app and can run on Mac, Windows or Linux.
-I need to do a better job setting up a release pipeline that will publish the artifact to the github for different version.
+This app was built as a cross-platform and can be installed on many well-known platforms such as Mac, Windows, and Linux. There are multiple ways of running this app on the server, but let's concentrate on two major approaches.
 
-However, I am going to keep instruction for Windows.
-If you want to run it on other platform please compile the app.
+### 1. Framework dependent
+The biggest advantage of the framework-dependent version is a smaller app footprint. This app does not include a runtime and hence is lightweight, consuming only 100-200KB of storage. It is also easier to distribute because the same executable can be run on different platforms.
 
-### Windows
+To use this approach, you need to install the .NET 6.0 runtime on the server. You can download and follow the steps outlined on this [page](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
 
-Open PowerShell as an administrator and copy this super formatted line:
+### 2. Platform specific
+This is a self-contained package that includes a runtime and can be executed on the server without installing dependencies. Because it includes a runtime that is specific to the operating system (and architecture), you cannot run a Windows build on Linux and vice versa.
 
-**Before You do that**
+Also, the build will be heavier than the framework-dependent version.
 
-*You can change variables to reflect the path and names for your config.*
+I have a **TODO** item to simplify the release process and publish binaries for all platforms together. Currently, you can find published binaries [here](https://github.com/MTokarev/webhookshell/releases).
 
-```ps
-$tmpFile="C:\Windows\Temp\win-x64.zip";$tmpHostingEnv="C:\Windows\Temp\ihe.exe";$webAppLocation="C:\inetpub\webhookshell";$webSiteName="webHookShell";$AppPoolName="webhookshell";Write-Host -ForegroundColor Green "[+]Spelling magic, it wouldn't take more than ages...";Write-Host -ForegroundColor Green "`t-Downloading binaries from github";[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;Invoke-WebRequest https://github.com/MTokarev/webhookshell/blob/master/bin/Debug/netcoreapp3.1/win-x64.zip?raw=true -OutFile $tmpFile;New-Item -Path $webAppLocation -Type Directory | Out-Null;Write-Host -ForegroundColor Green "`t-Expanding archive $tmpFile to $webAppLocation";[System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null;[System.IO.Compression.ZipFile]::ExtractToDirectory($tmpFile, $webAppLocation);Write-Host -ForegroundColor Green "`t-Installing IIS";Install-WindowsFeature Web-Server -IncludeManagementTools | Out-Null;Write-Host -ForegroundColor Green "`t-Downloading Hosting Bundle from MSFT to support ASP.NET Core behind IIS";Invoke-WebRequest https://download.visualstudio.microsoft.com/download/pr/7ab0bc25-5b00-42c3-b7cc-bb8e08f05135/91528a790a28c1f0fe39845decf40e10/dotnet-hosting-6.0.16-win.exe -OutFile $tmpHostingEnv;Write-Host -ForegroundColor Green "`t-Installing Hosting Bundle in zero touch mode";Start-Process -FilePath $tmpHostingEnv -Wait -ArgumentList /passive;iisreset | Out-Null;New-WebAppPool -name $AppPoolName -Force | Out-Null;$appPool = Get-Item "IIS:\AppPools\$AppPoolName";$appPool.processModel.identityType = "LocalSystem";$appPool | Set-Item;Write-Host -ForegroundColor Green "`t-Registering Site in IIS";new-WebSite -name $webSiteName -PhysicalPath "$webAppLocation" -ApplicationPool $AppPoolName -force | Out-Null;Write-Host -ForegroundColor Green "`t-Allowing HTTP port passing Windows Firewall";New-NetFirewallRule -DisplayName "HTTP-TCP-80" -Direction Inbound -LocalPort 80 -Protocol TCP -Action Allow | Out-Null;Write-Host -ForegroundColor Green "`t***Execution has been completed***"
+Each platform will have a dedicated release. For example, `Release 14` will include:
+- Release 14 for Windows
+- Release 14 for RedHat
+- Release 14 for Linux
+- Release 14 (Requires .NET 6.0 runtime)
 
-```
+**I strongly recommend setting up an HTTPS listener and keeping it as the only available entry point.**
 
-![img](~/../Docs/Img/installationOnWindows.png)
-
-This script will:
-
-1. Download the binary from github
-2. Download Hosting bundle from MSFT (to support asp.net core behind IIS)
-3. Install IIS
-4. Create and configure website
-5. Add firewall exception for HTTP port
-
-**I strongly recommend to set a HTTPS listener and keep it as the only available entry point.**
+### Proxy
+You can run this API as a service or put it behind the proxy/web server. For instance IIS, Apache, NGINX.
 
 ## Make sure it works
 
-By default I've included one **ps1** script `Test-Script.ps1` that you can run.
-Script has 3 optional parameters:
+By default, I've included one **ps1** script `Test-Script.ps1` that you can run. The script has 3 optional parameters:
 
 ```
 -Param1 [string]
 -Param2 [string]
 ```
-If you provide directory `-Param1 A -Param2 B` then script will return them (as in the screenshot above). 
+If you provide `-Param1 A -Param2 B` as parameters, the script will return them (as shown in the screenshot above).
 
 ## Security Context
 
-By default, web app on the windows platforms uses `applicationPool` context (LocalSystem) which means that it has a local admin access. You can provide any credentials inside your ps1 script by using your own logic, or you can change appSetting username in the IIS to change the context.
+By default, the web app on Windows platforms uses the `applicationPool` context (LocalSystem), which means that it has local admin access. You can provide any credentials inside your ps1 script by using your own logic, or you can change the appSetting username in IIS to change the context.
+
+On linux it is up to you to choose the user context.
 
 ## How to add another providers
 
-When you need to add a new script handler you just need to modify appsettings.json.
-You don't need to change the code or recompile the app.
-
-Config example:
-```json
-"Scripts": {
-    "DefaultKey": "DefaultKey",
-    "Handlers": [
-      {
-        "ProcessName": "NewProcessToRun",
-        "ScriptsLocation": "./newHandlerScriptLocation",
-        "FileExtension": "nh" // Should be a script extension. For instance a python 'script.py' has a 'py' file extension.
-      }
-    ]
-  }
-```
+When you need to add a new script handler, you just need to modify `appsettings.json`. You don't need to change the code
