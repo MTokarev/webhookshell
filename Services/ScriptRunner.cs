@@ -13,13 +13,13 @@ namespace webhookshell.Services
     {
         private readonly ScriptOptions _options;
 
-        public ScriptRunner(IOptions<ScriptOptions> options)
+        public ScriptRunner(IOptionsSnapshot<ScriptOptions> options)
         {
             _options = options.Value;
         }
         public Result<DTOResult> Run(DTOScript scriptToRun)
         {
-            Result<ScriptHandler> validationResult = CheckIfScriptIsValid(scriptToRun);
+            Result<ScriptHandlerOptions> validationResult = CheckIfScriptIsValid(scriptToRun);
             Result<DTOResult> scriptRunResult = new();
 
             if (!validationResult.IsValid)
@@ -42,9 +42,9 @@ namespace webhookshell.Services
             return scriptRunResult;
         }
 
-        private Result<ScriptHandler> CheckIfScriptIsValid(DTOScript scriptToRun)
+        private Result<ScriptHandlerOptions> CheckIfScriptIsValid(DTOScript scriptToRun)
         {
-            Result<ScriptHandler> result = new();
+            Result<ScriptHandlerOptions> result = new();
 
             string scriptExtension = scriptToRun
                 .Script
@@ -57,7 +57,7 @@ namespace webhookshell.Services
                 return result;
             }
             
-            ScriptHandler handler = _options
+            ScriptHandlerOptions handler = _options
                 .Handlers
                 .Where(script => string.Equals(script.FileExtension, scriptExtension, StringComparison.InvariantCultureIgnoreCase))
                 .FirstOrDefault();
@@ -110,7 +110,7 @@ namespace webhookshell.Services
             return stdout;
         }
 
-        private ProcessToRun ProcessBuilder(DTOScript scriptToRun, ScriptHandler handler)
+        private ProcessToRun ProcessBuilder(DTOScript scriptToRun, ScriptHandlerOptions handler)
         {
             
             ProcessToRun processToRun = new();

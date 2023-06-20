@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace webhookshell.Options
 {
-    public class ScriptHandler
+    public class ScriptHandlerOptions
     {
         public string ScriptsLocation { get; set; }
         public string ProcessName { get; set; }

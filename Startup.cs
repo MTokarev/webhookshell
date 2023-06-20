@@ -27,7 +27,7 @@ namespace webhookshell
             });
             
             services.AddControllers();
-            services.AddSingleton<IScriptRunner, ScriptRunner>();
+            services.AddScoped<IScriptRunner, ScriptRunner>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

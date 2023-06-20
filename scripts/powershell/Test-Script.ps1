@@ -1,6 +1,6 @@
 param(
     [string]$Param1 = "DefaultValue1",
-    [string]$Param2 = "DefaultValue1",
+    [string]$Param2 = "DefaultValue2",
     [string]$CreateFileIn = ""
 )
 
