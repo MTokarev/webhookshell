@@ -45,7 +45,7 @@ jobs:
         else
             folder="${{ inputs.runtime-name }}/publish"
         fi
-        tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/$folder -cvfz $ARTIFACT_FILE_NAME .
+        tar -C /home/runner/work/webhookshell/webhookshell/bin/Release/net6.0/$folder -cvzf $ARTIFACT_FILE_NAME .
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
       with:
