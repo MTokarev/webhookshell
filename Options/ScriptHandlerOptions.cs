@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace webhookshell.Options
@@ -8,6 +9,6 @@ namespace webhookshell.Options
         public string ProcessName { get; set; }
         public string FileExtension { get; set; }
         public string Key { get; set; }
-        public Dictionary<string, string> KeysMapping { get; set;} = new();
+        public Dictionary<string, string> KeysMapping { get; set;} = new (StringComparer.OrdinalIgnoreCase);
     }
 }
