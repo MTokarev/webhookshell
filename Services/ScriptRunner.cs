@@ -50,13 +50,13 @@ namespace webhookshell.Services
             // Handle the case when user provided just a Key, but not the script. 
             if (scriptToRun.Script == null)
             {
-                if (!_options.ScriptsByKey.TryGetValue(scriptToRun.Key, out ScriptByKey scriptByKey))
+                if (!_options.ScriptsByKey.TryGetValue(scriptToRun.Key, out string scriptByKey))
                 {
                     result.Errors.Add($"No script is registered under provided security key.");
                     return result;
                 }
                 
-                scriptToRun.Script = scriptByKey.Script;
+                scriptToRun.Script = scriptByKey;
                 
                 // Since we already have got a call from the key, we don't need to validate it
                 skipKeyValidation = true;
