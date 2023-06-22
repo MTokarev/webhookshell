@@ -46,6 +46,22 @@ namespace webhookshell.Services
         {
             Result<ScriptHandlerOptions> result = new();
 
+            bool skipKeyValidation = false;
+            // Handle the case when user provided just a Key, but not the script. 
+            if (scriptToRun.Script == null)
+            {
+                if (!_options.ScriptsByKey.TryGetValue(scriptToRun.Key, out ScriptByKey scriptByKey))
+                {
+                    result.Errors.Add($"No script is registered under provided security key.");
+                    return result;
+                }
+                
+                scriptToRun.Script = scriptByKey.Script;
+                
+                // Since we already have got a call from the key, we don't need to validate it
+                skipKeyValidation = true;
+            }
+
             string scriptExtension = scriptToRun
                 .Script
                 .Split(".", StringSplitOptions.RemoveEmptyEntries)
@@ -71,6 +87,11 @@ namespace webhookshell.Services
             else
             {
                 result.Data = handler;
+            }
+
+            if (skipKeyValidation)
+            {
+                return result;
             }
 
             if (!handler.KeysMapping.TryGetValue(scriptToRun.Script, out string key))
