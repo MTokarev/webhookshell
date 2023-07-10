@@ -64,20 +64,22 @@ Here you can see that the http body is used.
 ![img](~/../Docs/Img/postman-post.png)
 
 ### Triggers
-Optionally you can specify trigger for your script.
+Optionally you can specify a trigger for your script. The trigger acts as a filter or the set of rules for the script.
 Available triggers:
 - httpMethod
 - ipAddresses
 
 #### Http Method
 You can set certain script to be executed only from `POST` or `GET` method.
-This parameter is optional, if not set then you can run this script from both `POST` and `GET`.
+This parameter is optional. If not set then you can run this script from both methods.
 
 #### IP Addresses
-Add IP address to the array of allowed list if you need to restrict certain script to run only from the caller IP address.
-Optional parameter, if not provided then any IP address can call the script.
+Add IP address to the array if you need to restrict the script to run only from the certain caller IP address.
+Both IPv4 and IPv6 are supported.
+Optional parameter. If not provided then any IP address can call the script.
 
 #### Example
+In this example script `test-script.py` can be executed only from `GET` method and only if the caller is in the `ipAddresses` list.
 ```json
 "ScriptsMapping": [
   {
@@ -87,6 +89,7 @@ Optional parameter, if not provided then any IP address can call the script.
       "httpMethod": "GET",
       "ipAddresses": [
         "127.0.0.1",
+        "192.168.0.1",
         "::1"
       ]
     }
