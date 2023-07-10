@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 
-namespace webhookshell.Options
+namespace Webhookshell.Models
 {
-    public class ScriptHandlerOptions
+    public class ScriptHandler
     {
         public string ScriptsLocation { get; set; }
         public string ProcessName { get; set; }
         public string FileExtension { get; set; }
         public string Key { get; set; }
-        public Dictionary<string, string> KeysMapping { get; set;} = new (StringComparer.OrdinalIgnoreCase);
+        public List<ScriptMapping> ScriptsMapping { get; set; } = new();
     }
 }

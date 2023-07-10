@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace webhookshell.Controllers
+namespace Webhookshell.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ErrorController: ControllerBase
+    public class ErrorController : ControllerBase
     {
         public IActionResult HandleExceptions()
         {

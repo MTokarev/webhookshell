@@ -7,6 +7,12 @@
     - [Content](#content)
   - [Product Overview](#product-overview)
   - [How it works](#how-it-works)
+    - [GET Example](#get-example)
+    - [POST Example](#post-example)
+    - [Triggers](#triggers)
+      - [Http Method](#http-method)
+      - [IP Addresses](#ip-addresses)
+      - [Example](#example)
   - [Setting up](#setting-up)
     - [Key configuration](#key-configuration)
   - [Installation](#installation)
@@ -21,12 +27,13 @@
 In the modern world, there are different approaches to run scripts using WebHooks, such as Azure Functions, Azure Automation, or Amazon Lambda. In the on-prem world, users might use tools like Jenkins just to provide the ability to trigger function execution, which can be overkill for webhooks. This small lightweight project was born as an open-source alternative that you can easily deploy on both Linux or Windows boxes.
 
 ## How it works
-Users send an HTTP GET message to the server. The call includes the following parameters:
+Users send an HTTP GET or POST message to the server. The call includes the following parameters:
 
 1. Security Key
 2. Script name
 3. *[Optional]* Param
 
+### GET Example
 The base project URI is:
 
 `https://localhost:5001/webhook/v1?key=yourKey&script=YourScript&param=-Your-Params`
@@ -50,6 +57,42 @@ And with parameters:
 `https://localhost:5001/webhook/v1?key=24ffc5be-7dd8-479f-898e-27169bf23e7f&script=Test-Script.ps1&param=-Param1-A-Param2-B`
 
 ![img](~/../Docs/Img/scriptexecutedsuccesfully2.png)
+
+### POST Example
+This example is different only in terms how you supply the data.
+Here you can see that the http body is used.
+![img](~/../Docs/Img/postman-post.png)
+
+### Triggers
+Optionally you can specify trigger for your script.
+Available triggers:
+- httpMethod
+- ipAddresses
+
+#### Http Method
+You can set certain script to be executed only from `POST` or `GET` method.
+This parameter is optional, if not set then you can run this script from both `POST` and `GET`.
+
+#### IP Addresses
+Add IP address to the array of allowed list if you need to restrict certain script to run only from the caller IP address.
+Optional parameter, if not provided then any IP address can call the script.
+
+#### Example
+```json
+"ScriptsMapping": [
+  {
+    "name": "test-script.py",
+    "key": "77aae8aa-50d2-49d9-be8c-e9f59aaf39e9",
+    "trigger": {
+      "httpMethod": "GET",
+      "ipAddresses": [
+        "127.0.0.1",
+        "::1"
+      ]
+    }
+  }
+]
+```
 
 ## Setting up
 
@@ -85,9 +128,19 @@ For example:
       "ProcessName": "python3",
       "ScriptsLocation": "./pythonscripts",
       "FileExtension": "py",
-      "KeysMapping": {
-        "test-script.py": "77aae8aa-50d2-49d9-be8c-e9f59aaf39e9"
-      }
+      "ScriptsMapping": [
+        {
+          "name": "test-script.py",
+          "key": "77aae8aa-50d2-49d9-be8c-e9f59aaf39e9",
+          "trigger": {
+            "httpMethod": "GET",
+            "ipAddresses": [
+              "127.0.0.1",
+              "::1"
+            ]
+          }
+        }
+      ]
     }
   ]
 }

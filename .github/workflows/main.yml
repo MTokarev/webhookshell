@@ -3,6 +3,8 @@ name: .NET
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - src/*
 
 # TODO: Currently all jobs will create a different releases with the same name
 # For Example:

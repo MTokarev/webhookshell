@@ -1,0 +1,49 @@
+﻿<Properties StartupConfiguration="{A00D04C3-FB24-47E9-9805-3644A82A2053}|Default">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.Webhookshell PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Services/ScriptRunner.cs">
+    <Files>
+      <File FileName="Startup.cs" Line="1" Column="1" />
+      <File FileName="Services/HandlerDispatcher.cs" Line="8" Column="10" />
+      <File FileName="Services/ScriptRunner.cs" Line="55" Column="56" />
+      <File FileName="Services/ScriptValidationService.cs" Line="5" Column="1" />
+      <File FileName="Options/ScriptOptions.cs" Line="1" Column="1" />
+      <File FileName="Models/Trigger.cs" Line="1" Column="1" />
+      <File FileName="Models/ScriptMapping.cs" Line="7" Column="24" />
+      <File FileName="Models/ScriptHandler.cs" Line="1" Column="1" />
+      <File FileName="Models/Result.cs" Line="7" Column="28" />
+      <File FileName="Controllers/WebHookController.cs" Line="13" Column="50" />
+      <File FileName="Models/ProcessToRun.cs" Line="6" Column="37" />
+      <File FileName="Models/HttpTriggerMethod.cs" Line="8" Column="2" />
+      <File FileName="Models/DtoScript.cs" Line="1" Column="1" />
+      <File FileName="Models/DtoResult.cs" Line="1" Column="1" />
+      <File FileName="Interfaces/IScriptValidator.cs" Line="10" Column="37" />
+      <File FileName="Interfaces/IScriptValidationService.cs" Line="1" Column="1" />
+      <File FileName="Interfaces/IScriptRunnerService.cs" Line="1" Column="1" />
+      <File FileName="Interfaces/IHandlerDispatcher.cs" Line="9" Column="2" />
+      <File FileName="Controllers/ErrorController.cs" Line="8" Column="34" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Webhookshell">
+            <Node name="Webhookshell">
+              <Node name="Controllers" expanded="True" />
+              <Node name="Interfaces" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="Options" expanded="True" />
+              <Node name="Services" expanded="True">
+                <Node name="ScriptRunner.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+</Properties>

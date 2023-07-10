@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.001.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webhookshell", "webhookshell.csproj", "{A00D04C3-FB24-47E9-9805-3644A82A2053}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhookshell", "./src/Webhookshell.csproj", "{A00D04C3-FB24-47E9-9805-3644A82A2053}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

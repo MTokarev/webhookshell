@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace webhookshell.Models
+namespace Webhookshell.Models
 {
-    public class DTOScript
+    public class DtoScript
     {
         [Required]
         public string Script { get; set; }

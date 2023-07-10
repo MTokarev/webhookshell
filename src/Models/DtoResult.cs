@@ -1,6 +1,6 @@
-namespace webhookshell.Models
+namespace Webhookshell.Models
 {
-    public class DTOResult
+    public class DtoResult
     {
         public string ScriptName { get; set; }
         public string Message { get; set; }

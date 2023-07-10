@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using Webhookshell.Models;
 
-namespace webhookshell.Options
+namespace Webhookshell.Options
 {
     public class ScriptOptions
     {
         public string DefaultKey { get; set; }
-        public IList<ScriptHandlerOptions> Handlers { get; set; }        
+        public IList<ScriptHandler> Handlers { get; set; }
     }
 }

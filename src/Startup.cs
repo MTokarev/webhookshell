@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using webhookshell.Interfaces;
-using webhookshell.Options;
-using webhookshell.Services;
+using Webhookshell.Interfaces;
+using Webhookshell.Options;
+using Webhookshell.Services;
+using Webhookshell.Validators;
 
-namespace webhookshell
+namespace Webhookshell
 {
     public class Startup
     {
@@ -27,7 +28,19 @@ namespace webhookshell
             });
             
             services.AddControllers();
-            services.AddScoped<IScriptRunner, ScriptRunner>();
+            services.AddScoped<IScriptRunnerService, ScriptRunner>();
+            services.AddScoped<IHandlerDispatcher, HandlerDispatcher>();
+            services.AddScoped<IScriptValidationService, ScriptValidationService>();
+
+            // Register validators
+            // The order is matter, if the first validator fails
+            // the service return validation errors and stop further validation.
+            // This was made like that because in some cases when validator 1 is failed
+            // then it does not make sense to run the validator 2 because it might depend on the 1st one.
+            services.AddScoped<IScriptValidator, HttpTriggerValidator>();
+            services.AddScoped<IScriptValidator, IPAddressValidator>();
+            services.AddScoped<IScriptValidator, KeyValidator>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
