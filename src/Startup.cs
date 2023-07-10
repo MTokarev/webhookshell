@@ -40,7 +40,6 @@ namespace Webhookshell
             services.AddScoped<IScriptValidator, HttpTriggerValidator>();
             services.AddScoped<IScriptValidator, IPAddressValidator>();
             services.AddScoped<IScriptValidator, KeyValidator>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
