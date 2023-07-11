@@ -25,13 +25,9 @@ namespace Webhookshell.Validators
         var scriptMapping = handler.ScriptsMapping
             .Where(script => string.Equals(script.Name, scriptToCheck.Script, StringComparison.InvariantCultureIgnoreCase))
             .FirstOrDefault();
-
-        if (scriptMapping is null)
-        {       
-            return result;
-        }
-
-        if (scriptMapping.Trigger.IpAddresses is null || scriptMapping.Trigger.IpAddresses.Count() == 0)
+            
+        if (scriptMapping?.Trigger?.IpAddresses is null 
+            || scriptMapping.Trigger.IpAddresses.Count() == 0)
         {
             return result;
         }

@@ -6,5 +6,6 @@ namespace Webhookshell.Models
     {
         public HttpTriggerMethod? HttpMethod { get; set; }
         public List<string> IpAddresses { get; set; }
+        public TimeFrame? TimeFrame { get; set; }
     }
 }

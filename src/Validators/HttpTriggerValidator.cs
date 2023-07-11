@@ -24,12 +24,7 @@ namespace Webhookshell.Validators
             .Where(script => string.Equals(script.Name, scriptToCheck.Script, StringComparison.InvariantCultureIgnoreCase))
             .FirstOrDefault();
 
-        if (scriptMapping is null)
-        {       
-            return result;
-        }
-
-        if (scriptMapping.Trigger is null)
+        if (scriptMapping?.Trigger is null)
         {
             return result;
         }
