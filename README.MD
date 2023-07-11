@@ -73,17 +73,18 @@ Available triggers:
 
 #### Http Method
 You can set certain script to be executed only from `POST` or `GET` method.
-This parameter is optional. If not set then you can run this script from both methods.
+**This parameter is optional**. If not set then you can run this script from both methods.
 
 #### IP Addresses
 Add IP address to the array if you need to restrict the script to run only from the certain caller IP address.
 Both IPv4 and IPv6 are supported.
-Optional parameter. If not provided then any IP address can call the script.
+**Optional parameter**. If not provided then any IP address can call the script.
 
 #### Time frame
-You can specify when you want the script to be available for execution.
-Current format `HH:mm:ss` **in UTC**.
-Optional parameter. If not set then the script can be launched anytime of the day.
+You can specify one or more time frames when you have a time constrain.
+If set then the script can be launched only on specified time range[s].
+Time format `HH:mm:ss` **in UTC**.
+**Optional parameter**. If not set then the script can be launched anytime of the day.
 
 #### Example
 In this example script `test-script.py` can be executed only from `GET` method and only if the caller is in the `ipAddresses` list.
@@ -96,13 +97,19 @@ In this example script `test-script.py` can be executed only from `GET` method a
       "httpMethod": "GET",
       "ipAddresses": [
         "127.0.0.1",
-        "192.168.0.1",
         "::1"
+      ],
+      "timeFrames": 
+      [
+        {
+          "startUtc": "03:00:00",
+          "endUtc": "07:59:59"
+        },
+        {
+          "startUtc": "23:00:00",
+          "endUtc": "00:59:59"
+        }
       ]
-    },
-    "timeFrame": {
-      "startUtc": "08:00:00",
-      "endUtc": "17:00:00"
     }
   }
 ]
