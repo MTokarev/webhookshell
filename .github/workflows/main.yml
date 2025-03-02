@@ -4,9 +4,8 @@ on:
   push:
     branches: [ "master" ]
     paths:
-      - src/*
-      - .github/*
-
+      - 'src/*'
+      - '**/main.yml'
 jobs:
   docker-build-and-push:
     name: Build and Push Docker Image
