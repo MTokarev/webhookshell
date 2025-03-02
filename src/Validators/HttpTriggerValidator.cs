@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -21,21 +22,26 @@ namespace Webhookshell.Validators
         Result<DtoResult> result = new();
        
         var scriptMapping = handler.ScriptsMapping
-            .Where(script => string.Equals(script.Name, scriptToCheck.Script, StringComparison.InvariantCultureIgnoreCase))
-            .FirstOrDefault();
-
-        if (scriptMapping?.Trigger is null)
+            .FirstOrDefault(script => string.Equals(script.Name, scriptToCheck.Script, StringComparison.InvariantCultureIgnoreCase));
+        
+        if (scriptMapping?.Trigger?.HttpMethods is null)
         {
             return result;
         }
-
-        if (scriptMapping.Trigger.HttpMethod is not null)
+        
+        if (!HttpTriggerMethod.TryParse(httpContext.Request.Method, out HttpTriggerMethod httpMethod))
         {
-            if (!string.Equals(scriptMapping.Trigger.HttpMethod.ToString(), httpContext.Request.Method, StringComparison.CurrentCultureIgnoreCase))
-            {
-                result.Errors.Add($"Unable to launch the script '{scriptMapping?.Name}'. Please make sure that you use the right HTTP Method.");
-            }
+            result.Errors.Add($"Unable to parse HTTP Method '{httpContext.Request.Method}' to available methods '{string.Join(", ", scriptMapping.Trigger.HttpMethods)}'.");
+            return result;
         }
+        
+        if (scriptMapping.Trigger.HttpMethods.Contains(httpMethod))
+        {
+            return result;
+        } 
+
+        result.Errors.Add($"Unable to launch the script '{scriptMapping?.Name}'. Please make sure that you use the right HTTP Method. " + 
+            $"Allowed methods: '{string.Join(", ", scriptMapping.Trigger.HttpMethods)}'.");
 
         return result;
     }

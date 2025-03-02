@@ -5,8 +5,11 @@ namespace Webhookshell.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    // This controller is not documented in the Swagger UI
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ErrorController : ControllerBase
     {
+        [HttpGet]
         public IActionResult HandleExceptions()
         {
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();

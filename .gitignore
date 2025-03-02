@@ -1,3 +1,4 @@
-*/obj/*
-*/bin/*
+**/obj/*
+**/bin/*
 .DS_STORE
+.idea

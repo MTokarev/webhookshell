@@ -12,6 +12,26 @@ on:
 # 2. Release 5 (for windows x64)
 # This needs to be fixed. Only one release should be created at the pipeline run, and that release should include all artifacts (windows, linux, etc)
 jobs:
+  docker-build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t mtokarevv/webhookshell:latest --push .
+
   framework-specific:
     name: Build and Release Framework-Dependent Package
     uses: ./.github/workflows/dotnet.yml

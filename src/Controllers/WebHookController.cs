@@ -4,6 +4,9 @@ using Webhookshell.Models;
 
 namespace Webhookshell.Controllers
 {
+    /// <summary>
+    /// This controller is responsible for running the scripts.
+    /// </summary>
     [ApiController]
     [Route("[controller]/v1/")]
     public class WebHookController : ControllerBase
@@ -15,6 +18,13 @@ namespace Webhookshell.Controllers
             _scriptRunner = scriptRunner;
         }
 
+        /// <summary>
+        /// Run scripts by GET request
+        /// All script parameters are passed as query parameters
+        /// Use POST method if you need to pass a script in the request body
+        /// </summary>
+        /// <param name="scriptFromQuery"><see cref="DtoScript"/></param>
+        /// <returns><see cref="Result{T}"/></returns>
         [HttpGet]
         public IActionResult StartScriptFromGet([FromQuery] DtoScript scriptFromQuery)
         {
@@ -28,6 +38,13 @@ namespace Webhookshell.Controllers
             return BadRequest(scriptRun.Errors);
         }
 
+        /// <summary>
+        /// Run scripts by POST request
+        /// You need to pass a script in the request body
+        /// Use GET method if you need to pass a script as query parameters
+        /// </summary>
+        /// <param name="scriptFromBody"><see cref="DtoScript"/></param>
+        /// <returns><see cref="Result{T}"/></returns>
         [HttpPost]
         public IActionResult StartScriptFromPost([FromBody] DtoScript scriptFromBody)
         {

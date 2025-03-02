@@ -5,6 +5,10 @@ using Webhookshell.Models;
 
 namespace Webhookshell.Services
 {
+    /// <summary>
+    /// Script validation service
+    /// Runs all registered script validators to check if the script is valid
+    /// </summary>
     public class ScriptValidationService : IScriptValidationService
     {
         private readonly IHandlerDispatcher _handlerDispatcher;

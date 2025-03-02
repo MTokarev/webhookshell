@@ -7,25 +7,32 @@
     - [Content](#content)
   - [Product Overview](#product-overview)
   - [How it works](#how-it-works)
+    - [How to test](#how-to-test)
     - [GET Example](#get-example)
     - [POST Example](#post-example)
     - [Triggers](#triggers)
-      - [Http Method](#http-method)
+      - [Http Methods](#http-methods)
       - [IP Addresses](#ip-addresses)
       - [Time frame](#time-frame)
       - [Example](#example)
   - [Setting up](#setting-up)
     - [Key configuration](#key-configuration)
   - [Installation](#installation)
-    - [1. Framework dependent](#1-framework-dependent)
-    - [2. Platform specific](#2-platform-specific)
+    - [The easiest way](#the-easiest-way)
+    - [1. Build docker by yourself](#1-build-docker-by-yourself)
+    - [2. Framework dependent](#2-framework-dependent)
+    - [3. Platform specific](#3-platform-specific)
     - [Proxy](#proxy)
   - [Make sure it works](#make-sure-it-works)
   - [Security Context](#security-context)
   - [How to add another providers](#how-to-add-another-providers)
 
 ## Product Overview
-In the modern world, there are different approaches to run scripts using WebHooks, such as Azure Functions, Azure Automation, or Amazon Lambda. In the on-prem world, users might use tools like Jenkins just to provide the ability to trigger function execution, which can be overkill for webhooks. This small lightweight project was born as an open-source alternative that you can easily deploy on both Linux or Windows boxes.
+In the modern world, there are different approaches to running scripts using WebHooks, such as Azure Functions, Azure Automation, or Amazon Lambda. In the on-prem world, users might use tools like Jenkins merely to provide the ability to trigger function execution, which can be overkill for webhooks. This small, lightweight project was born as an open-source alternative that you can easily deploy on both Linux and Windows machines.
+
+<div style="background-color:rgb(196, 109, 109); padding: 10px; border-left: 5px solid #007bff;">
+  <strong>Note:</strong> This container should be run behind HTTPS to avoid possible data interception.
+</div>
 
 ## How it works
 Users send an HTTP GET or POST message to the server. The call includes the following parameters:
@@ -33,6 +40,12 @@ Users send an HTTP GET or POST message to the server. The call includes the foll
 1. Security Key
 2. Script name
 3. *[Optional]* Param
+
+### How to test
+The project has swagger installed. Just open `http[s]://{YourAddress}:{Port}`.
+
+Example:
+![img](~/../Docs/Img/swagger.png) 
 
 ### GET Example
 The base project URI is:
@@ -71,8 +84,8 @@ Available triggers:
 - ipAddresses
 - timeFrame
 
-#### Http Method
-You can set certain script to be executed only from `POST` or `GET` method.
+#### Http Methods
+You can set certain script to be executed only from `POST`, `GET` or from both methods.
 **This parameter is optional**. If not set then you can run this script from both methods.
 
 #### IP Addresses
@@ -94,7 +107,7 @@ In this example script `test-script.py` can be executed only from `GET` method a
     "name": "test-script.py",
     "key": "77aae8aa-50d2-49d9-be8c-e9f59aaf39e9",
     "trigger": {
-      "httpMethod": "GET",
+      "httpMethods": ["GET"],
       "ipAddresses": [
         "127.0.0.1",
         "::1"
@@ -154,7 +167,7 @@ For example:
           "name": "test-script.py",
           "key": "77aae8aa-50d2-49d9-be8c-e9f59aaf39e9",
           "trigger": {
-            "httpMethod": "GET",
+            "httpMethods": ["GET"],
             "ipAddresses": [
               "127.0.0.1",
               "::1"
@@ -173,12 +186,43 @@ In this example, the script `test-script.py` has a unique key `77aae8aa-50d2-49d
 
 This app was built as a cross-platform and can be installed on many well-known platforms such as Mac, Windows, and Linux. There are multiple ways of running this app on the server, but let's concentrate on two major approaches.
 
-### 1. Framework dependent
+### The easiest way
+
+Pull the docker image from the repository.
+> **Note:** This container was built and pushed to the dockerHub using `linux/amd64`. Please create an issue in this repository and I will build and publish for the other platforms when I have time.
+```
+docker pull mtokarevv/webhookshell:latest
+docker run --platform linux/amd64 -d -p 8080:8080 webhookshell
+```
+To check if it works, please navigate to `http://YourAddress:8080`. It should open the Swagger sandbox, where you can run test scripts.
+
+This container can and should be run behind HTTPS:
+```
+docker run --platform linux/amd64 -d -p 8080:8080 -p 8443:8443 -v /Users/mtokarev/Desktop:/certs:ro -e ASPNETCORE_Kestrel__Certificates__Default__Path=/certs/certificate.pfx -e ASPNETCORE_Kestrel__Certificates__Default__Password=123 webhookshell
+```
+
+| Option                                                                 | Explanation                                                                                                           |
+|------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `-v /Users/mtokarev/Desktop:/certs:ro`                                 | This mounts the local directory `/Users/mtokarev/Desktop` to the `/certs` directory in the container as read-only (`ro`). In this example this directory has a certificate `certificate.pfx`. |
+| `-e ASPNETCORE_Kestrel__Certificates__Default__Path=/certs/certificate.pfx` | This sets an environment variable to specify the path to the SSL certificate (`certificate.pfx`) inside the container.  |
+| `-e ASPNETCORE_Kestrel__Certificates__Default__Password=123`            | This sets an environment variable to specify the password for the SSL certificate (`certificate.pfx`).                |
+
+You can also bind a folder from the host if you want by using `-v` when you run the container.
+
+### 1. Build docker by yourself
+Make sure you have git and docker installed.
+```
+git clone https://github.com/MTokarev/webhookshell.git && cd webhookshell
+docker build -t webhookshell .
+docker run -d -p 8080:8080 webhookshell 
+```
+
+### 2. Framework dependent
 The biggest advantage of the framework-dependent version is a smaller app footprint. This app does not include a runtime and hence is lightweight, consuming only 100-200KB of storage. It is also easier to distribute because the same executable can be run on different platforms.
 
 To use this approach, you need to install the .NET 6.0 runtime on the server. You can download and follow the steps outlined on this [page](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
 
-### 2. Platform specific
+### 3. Platform specific
 This is a self-contained package that includes a runtime and can be executed on the server without installing dependencies. Because it includes a runtime that is specific to the operating system (and architecture), you cannot run a Windows build on Linux and vice versa.
 
 Also, the build will be heavier than the framework-dependent version.

@@ -21,7 +21,7 @@ namespace Webhookshell.Services
             string scriptExtension = scriptToCheck
                 .Script
                 .Split(".", StringSplitOptions.RemoveEmptyEntries)
-                .Last();
+                .LastOrDefault();
 
             if (scriptExtension is null)
             {
@@ -31,8 +31,7 @@ namespace Webhookshell.Services
 
             ScriptHandler handler = _options
                 .Handlers
-                .Where(script => string.Equals(script.FileExtension, scriptExtension, StringComparison.InvariantCultureIgnoreCase))
-                .FirstOrDefault();
+                .FirstOrDefault(script => string.Equals(script.FileExtension, scriptExtension, StringComparison.InvariantCultureIgnoreCase));
 
             if (handler is null)
             {
