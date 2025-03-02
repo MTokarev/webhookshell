@@ -7,7 +7,7 @@
     - [Content](#content)
   - [Product Overview](#product-overview)
   - [How it works](#how-it-works)
-    - [How to test](#how-to-test)
+    - [Test it](#test-it)
     - [GET Example](#get-example)
     - [POST Example](#post-example)
     - [Triggers](#triggers)
@@ -19,9 +19,10 @@
     - [Key configuration](#key-configuration)
   - [Installation](#installation)
     - [The easiest way](#the-easiest-way)
-    - [1. Build docker by yourself](#1-build-docker-by-yourself)
-    - [2. Framework dependent](#2-framework-dependent)
-    - [3. Platform specific](#3-platform-specific)
+    - [Build docker by yourself](#build-docker-by-yourself)
+    - [Legacy releases](#legacy-releases)
+      - [1. Framework dependent](#1-framework-dependent)
+      - [2. Platform specific](#2-platform-specific)
     - [Proxy](#proxy)
   - [Make sure it works](#make-sure-it-works)
   - [Security Context](#security-context)
@@ -35,19 +36,22 @@ In the modern world, there are different approaches to running scripts using Web
 </div>
 
 ## How it works
+
 Users send an HTTP GET or POST message to the server. The call includes the following parameters:
 
 1. Security Key
 2. Script name
 3. *[Optional]* Param
 
-### How to test
+### Test it
+
 The project has swagger installed. Just open `http[s]://{YourAddress}:{Port}`.
 
 Example:
 ![img](~/../Docs/Img/swagger.png) 
 
 ### GET Example
+
 The base project URI is:
 
 `https://localhost:5001/webhook/v1?key=yourKey&script=YourScript&param=-Your-Params`
@@ -209,7 +213,8 @@ docker run --platform linux/amd64 -d -p 8080:8080 -p 8443:8443 -v /Users/mtokare
 
 You can also bind a folder from the host if you want by using `-v` when you run the container.
 
-### 1. Build docker by yourself
+### Build docker by yourself
+
 Make sure you have git and docker installed.
 ```
 git clone https://github.com/MTokarev/webhookshell.git && cd webhookshell
@@ -217,12 +222,18 @@ docker build -t webhookshell .
 docker run -d -p 8080:8080 webhookshell 
 ```
 
-### 2. Framework dependent
+### Legacy releases
+
+This repository no longer publishes releases except docker images. Please build project by yourself if needed or consider run it as a docker container.
+
+#### 1. Framework dependent
+
 The biggest advantage of the framework-dependent version is a smaller app footprint. This app does not include a runtime and hence is lightweight, consuming only 100-200KB of storage. It is also easier to distribute because the same executable can be run on different platforms.
 
 To use this approach, you need to install the .NET 6.0 runtime on the server. You can download and follow the steps outlined on this [page](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
 
-### 3. Platform specific
+#### 2. Platform specific
+
 This is a self-contained package that includes a runtime and can be executed on the server without installing dependencies. Because it includes a runtime that is specific to the operating system (and architecture), you cannot run a Windows build on Linux and vice versa.
 
 Also, the build will be heavier than the framework-dependent version.
@@ -249,6 +260,8 @@ By default, I've included one **ps1** script `Test-Script.ps1` that you can run.
 -Param2 [string]
 ```
 If you provide `-Param1 A -Param2 B` as parameters, the script will return them (as shown in the screenshot above).
+
+Test it [using swagger](#test-it)
 
 ## Security Context
 
