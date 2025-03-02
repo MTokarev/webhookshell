@@ -30,4 +30,4 @@ jobs:
 
       - name: Build and push
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t mtokarevv/webhookshell:latest --push .
+          docker buildx build --platform linux/amd64,linux/arm64 -t mtokarevv/webhookshell:latest --push .
