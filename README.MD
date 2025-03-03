@@ -211,7 +211,8 @@ docker run --platform linux/amd64 -d -p 8080:8080 -p 8443:8443 -v /Users/mtokare
 | `-e ASPNETCORE_Kestrel__Certificates__Default__Path=/certs/certificate.pfx` | This sets an environment variable to specify the path to the SSL certificate (`certificate.pfx`) inside the container.  |
 | `-e ASPNETCORE_Kestrel__Certificates__Default__Password=123`            | This sets an environment variable to specify the password for the SSL certificate (`certificate.pfx`).                |
 
-You can also bind a folder from the host if you want by using `-v` when you run the container.
+
+You can also bind a script folder from the host if you want by using `-v` when you run the container.
 
 ### Build docker by yourself
 
